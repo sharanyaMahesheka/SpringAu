@@ -1,4 +1,8 @@
-
+body {
+ background: url(http://www.inkspilldesign.com/demo/wood-tile-background.jpg);
+ background-color: #424242;
+ font-family: Tahoma;
+}
 
 #calculator {
   width: 425px;
