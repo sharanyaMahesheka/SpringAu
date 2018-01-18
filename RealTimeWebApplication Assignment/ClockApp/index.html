@@ -1,0 +1,113 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Digital Clock</title>
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+
+</head>
+<body>
+	<p>Date/Time: <span id="datetime"></span></p>
+	<div><input type="text" id="time"></input>
+	<div><button onclick="resetTime()">Reset</button></div>
+	<div><button onclick="changeTime()">Set Time</button></div>
+	
+	<script>
+	'use strict'
+	var socket = io.connect();
+	var flag = true;
+	var t,t1;
+
+	function insideInterval(flag){
+		if(flag==true){
+			startTime();
+		}
+		else {
+		var time;
+			var d  = document.getElementById('datetime').innerHTML;
+			console.log(d);
+			
+			var list1 = d.split(":");  
+			var h1 = parseInt(list1[0]);
+			var m1 = parseInt(list1[1]);
+			var s1 = parseInt(list1[2]);
+			var d1 = new Date();
+				d1.setHours(h1);
+				
+				d1.setMinutes(m1);
+				d1.setSeconds(s1+1);
+				//console.log(d1);
+				console.log(d1);
+				
+				time = d1.getHours() + ":" +d1.getMinutes() + ":" + d1.getSeconds();
+				$('#datetime').html(time);
+				//document.getElementById('datetime').innerHTML = time;
+		}
+	}
+
+	function startTime() {	
+	clearInterval(t1);
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    var s = today.getSeconds();
+	
+    m = checkTime(m);
+    s = checkTime(s);
+    document.getElementById('datetime').innerHTML = h + ":" + m + ":" + s;
+	var t = h + ":" + m + ":" + s;
+	socket.emit('updateClock',t);
+     t =  setInterval(insideInterval, 1000);
+	}
+
+	startTime();
+
+	function resetTime(){
+		flag = true;
+		$('#time').val('');
+		//document.getElementById('time').value = "";
+		startTime();
+		
+	}
+	socket.on('Clock', function(data){
+		console.log("hello");
+			$('#datetime').html( data);
+			//changeTime();
+		});
+
+	function changeTime()
+	{
+		flag = false;
+		var time =  document.getElementById('time').value;
+		console.log(time);
+		var list = time.split(":");  
+		var h = parseInt(list[0]);
+		var m = parseInt(list[1]);
+		var s = parseInt(list[2]);
+		console.log("h="+h);
+		var newDate = new Date();
+		newDate.setSeconds(s);
+		newDate.setMinutes(m);
+		newDate.setHours(h);
+		
+		console.log(newDate);
+		$('#datetime').html( newDate.getHours() + ":" + newDate.getMinutes() + ":" + newDate.getSeconds());
+		//document.getElementById('datetime').innerHTML = newDate.getHours() + ":" + newDate.getMinutes() + ":" + newDate.getSeconds();
+		console.log(document.getElementById('datetime').innerHTML);
+		$('#time').val('');
+
+		socket.emit('updateClock',time);
+	}
+		
+		
+
+	
+	function checkTime(i) {
+    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+    return i;
+	}
+</script>
+
+</body>
+</html>
