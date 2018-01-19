@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Code Quality Assignment</title>
+	<script type="text/javascript" src="../JS/AnalyzeText.js"></script>
+</head>
+
+<body onLoad="checkMode()">
+	<input type="checkbox" onClick="checkMode()" id="NAMode" checked >Name/age accepting mode<br><br>
+	<div id="numberMode">
+		Enter number or a name:<br><br>
+		<input type="text" id="inputText"></input><br><br>
+		<button onclick="numberMode()">Analyze</button><br><br>
+		<span id="result"></span>
+	</div>
+
+	<div  id="nameMode">
+		Enter your Name:
+		<input type="text" id="name"></input><br><br>
+		<div id="gender">
+			<input type="radio"  id="male" name="gender" value="male"> Male<br>
+			<input type="radio"  id="female" name="gender" value="female"> Female<br><br>
+		</div>
+		<button onclick="nameAgeMode()">Analyze</button><br><br>
+		<span id="displayDetails"></span><br><br>
+		<div>
+			<table id="userDetails">
+			</table>
+		</div>
+	</div>
+
+</body>
+</html>
