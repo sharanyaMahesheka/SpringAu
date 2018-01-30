@@ -43,7 +43,7 @@ public class StudentService {
 		
 	}
 	
-	private boolean verifyStudentEntry(Student student)
+	private boolean isStudentExists(Student student)
 	{
 		if(student.getRollNo()<=0)
 			return false;
